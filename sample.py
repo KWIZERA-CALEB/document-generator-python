@@ -1,9 +1,13 @@
 from docx import Document
+import warnings
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx.shared import Pt, Inches, RGBColor
 
 # import openai
 import openai
+
+
+warnings.filterwarnings('ignore', category=UserWarning, module='docx.styles.styles')
 
 document = Document()
 
@@ -28,7 +32,7 @@ students_names_run.bold = True
 students_names_run.font.name = 'Calibri'
 
 # Adding individual student names
-learners_name = 'Spongebob'
+learners_name = input('Learners Name:')
 learners_name.upper()
 student_name_run = students_names_paragraph.add_run(f'{learners_name}')
 student_name_run.font.size = Pt(16)
@@ -38,7 +42,7 @@ student_name_run.font.color.rgb = RGBColor(10, 10, 200)
 student_name_run.font.name = 'Calibri'
 
 # Adding Grade paragraph
-learners_grade = 'Grade 2'
+learners_grade = input('Grade:')
 student_grade_paragraph = document.add_paragraph(f'GRADE: {learners_grade}')
 student_grade_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 student_grade_run = student_grade_paragraph.runs[0]
@@ -143,7 +147,7 @@ exam_details_title_run.font.name = 'Bookman Old'
 # student_details_add_names = student_details.add_run('Anika Teta')
 
 
-the_subject = 'LIBRARY'
+the_subject = input('The Subject:')
 library_title = document.add_paragraph(f'{the_subject}')
 library_title.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 library_title_run = library_title.runs[0]
@@ -157,23 +161,23 @@ library_title_run.font.name = 'Calibri'
 # classwork_title_run = classwork_title.runs[0]
 
 # custom variables
-classwork = 15
+classwork = input('Classwork-Library:')
 total_classwork = 30
 
-homework = 10
+homework = input('Homework-Library:')
 total_homework = 20
 
-exams = 25
+exams = input('Exams-Library:')
 total_exams = 50
 
 sum = 100
-total = (classwork + homework + exams) / sum
+total = (int(classwork) + int(homework) + int(exams)) / sum
 
 total_average = total * 100
 
 
 if total_average == 50:
-    comment_from_teacher = f'Is Able to make it better next time in {library_title}'
+    comment_from_teacher = f'Is able to do better next time in {the_subject}'
     learners_effort = 5
     learners_attitude = 6
 elif total_average < 50:
@@ -196,8 +200,8 @@ table4_row_one[2].text = 'Exams'
 
 table4_row_two = table4.rows[1].cells
 table4_row_two[0].text = f'{classwork}/30'
-table4_row_two[1].text = f'{homework}/30'
-table4_row_two[2].text = f'{exams}/30'
+table4_row_two[1].text = f'{homework}/20'
+table4_row_two[2].text = f'{exams}/50'
 
 total_average_title = document.add_paragraph()
 total_average_title.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
@@ -207,7 +211,7 @@ total_average_title_run.bold = True
 total_average_title_run.font.name = 'Calibri'
 
 # add total marks
-total_average_title_run = total_average_title.add_run(f'{total_average}%')
+total_average_title_run = total_average_title.add_run(f'{int(total_average)}%')
 total_average_title_run.font.size = Pt(12)
 total_average_title_run.bold = True
 total_average_title_run.font.name = 'Calibri'
@@ -244,9 +248,31 @@ table5_row_one[2].text = f'Attitude: {learners_attitude}'
 subject_comment = document.add_paragraph(f'Comment: {learners_name} {comment_from_teacher}')
 
 
-subject_teacher_name = document.add_paragraph('TR.Namara')
+
+
+
+course_content_title = document.add_paragraph('Course Outline')
+course_content_title.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+course_content_title_run = course_content_title.runs[0]
+course_content_title_run.font.size = Pt(14)
+course_content_title_run.bold = True
+course_content_title_run.font.name = 'Calibri'
+
+course_contents_input = input('Course contents(Separate by comma):')
+
+
+# split the course contents by comma
+
+course_contents = course_contents_input.split(', ')
+
+
+for course_content in course_contents:
+    document.add_paragraph(f'{course_content}', style="ListBullet")
+
+teacher_izina = input('Teacher Name:')
+subject_teacher_name = document.add_paragraph(f'Tr.{teacher_izina}')
 subject_teacher_name.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
 
 # Save the document
-document.save('template3.docx')
+document.save(f'{learners_name}-report-card.docx')
